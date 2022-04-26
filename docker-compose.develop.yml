@@ -1,0 +1,58 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres
+    container_name: revivl-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_USER
+    ports:
+      - '5433:5432'
+    volumes:
+      - ./postgres:/var/lib/postgres
+    networks:
+      - revivl
+
+  php-fpm:
+    restart: always
+    container_name: revivl-php
+    build:
+      context: .
+      dockerfile: ./build/php-fpm/Dockerfile
+    entrypoint: [ "bash", "-c", "composer install  --no-interaction && yarn install && php-fpm"]
+    volumes:
+      - ./revivl:/var/www/revivl
+    depends_on:
+      - postgres
+    networks:
+      - revivl
+
+  nginx:
+    image: nginx:latest
+    container_name: revivl-nginx
+    restart: always
+    ports:
+      - '80:80'
+    volumes:
+      - ./revivl:/var/www/revivl:rw,cached
+      - ./build/nginx/develop:/etc/nginx/conf.d/
+    depends_on:
+      - php-fpm
+      - postgres
+    networks:
+      - revivl
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    restart: on-failure
+    ports:
+      - 1025:1025
+      - 8025:8025
+    networks:
+      - revivl
+
+networks:
+  revivl:

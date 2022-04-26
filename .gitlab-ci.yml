@@ -1,0 +1,78 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  GIT_STRATEGY: fetch
+  GIT_CLEAN_FLAGS: none
+  DOCKER_DRIVER: overlay2
+
+build-develop:
+  image: docker/compose
+  stage: build
+  services:
+    - docker:dind
+  tags:
+    - develop
+  script:
+    - docker-compose -f docker-compose.dev-deploy.yml build
+  only:
+    - develop
+
+deploy-develop:
+  image: docker/compose
+  stage: deploy
+  services:
+    - docker:dind
+  tags:
+    - develop
+  script:
+    - docker-compose -f docker-compose.develop.yml build
+    - docker-compose -f docker-compose.develop.yml up -d
+    - docker-compose -f docker-compose.develop.yml exec -T php sh -c "composer install &&
+                    php bin/console doctrine:migration:migrate  --no-interaction &&
+                    php bin/console create:user:admin &&
+                    yarn install &&
+                    yarn encore dev"
+  environment:
+    name: develop
+    url: http://beta-revivl.profsoft.online
+  only:
+    - develop
+
+
+build-prod:
+  variables:
+    GIT_CLONE_PATH: /data/projects/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
+  image: docker/compose
+  stage: build
+  services:
+    - docker:dind
+  tags:
+    - prod
+  script:
+    - docker-compose -f docker-compose.production.yml build
+  only:
+    - master
+
+deploy-prod:
+  variables:
+    GIT_CLONE_PATH: /data/projects/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME
+  image: docker/compose
+  stage: deploy
+  services:
+    - docker:dind
+  tags:
+    - prod
+  script:
+    - docker-compose -f docker-compose.production.yml up -d
+    - docker-compose -f docker-compose.production.yml exec -T php sh -c "composer install &&
+          php bin/console doctrine:migration:migrate &&
+          php bin/console create:user:admin &&
+          yarn install &&
+          yarn encore prod"
+    - docker-compose -f  docker-compose.production.yml logs
+  environment:
+    name: prod
+  only:
+    - master
