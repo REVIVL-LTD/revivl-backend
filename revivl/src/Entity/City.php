@@ -7,7 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: AddressRepository::class)]
+#[ORM\Entity(repositoryClass: CityRepository::class)]
+#[ORM\Table(name: 'city')]
 class City
 {
     #[ORM\Id]
@@ -44,7 +45,7 @@ class City
     }
 
     /**
-     * @return Collection<int, User>
+     * @return Collection<int, AbstractUser>
      */
     public function getAddresses(): Collection
     {

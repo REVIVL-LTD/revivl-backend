@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AddressRepository::class)]
+#[ORM\Table(name: 'address')]
 class Address
 {
     #[ORM\Id]
@@ -27,7 +28,7 @@ class Address
     #[ORM\ManyToOne(targetEntity: House::class, inversedBy: 'houses')]
     private $streetHouse;
 
-    #[ORM\OneToMany(mappedBy: 'address', targetEntity: User::class)]
+    #[ORM\OneToMany(mappedBy: 'address', targetEntity: AbstractUser::class)]
     private $users;
 
     public function __construct()
@@ -89,29 +90,29 @@ class Address
     }
 
     /**
-     * @return Collection<int, User>
+     * @return Collection<int, Patient>
      */
     public function getUsers(): Collection
     {
         return $this->users;
     }
 
-    public function addUser(User $user): self
+    public function addUser(Patient $user): self
     {
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
-            $user->setAdress($this);
+            $user->setAddress($this);
         }
 
         return $this;
     }
 
-    public function removeUser(User $user): self
+    public function removeUser(Patient $user): self
     {
         if ($this->users->removeElement($user)) {
             // set the owning side to null (unless already changed)
-            if ($user->getAdress() === $this) {
-                $user->setAdress(null);
+            if ($user->getAddress() === $this) {
+                $user->setAddress(null);
             }
         }
 

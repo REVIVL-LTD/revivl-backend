@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PromocodeRepository::class)]
+#[ORM\Table(name: 'promocode')]
 class Promocode
 {
     use StatusTrait;
@@ -22,7 +23,7 @@ class Promocode
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'promocodes')]
+    #[ORM\ManyToMany(targetEntity: AbstractUser::class, inversedBy: 'promocodes')]
     private $users;
 
     public function __construct()
@@ -49,14 +50,14 @@ class Promocode
     }
 
     /**
-     * @return Collection<int, User>
+     * @return Collection<int, AbstractUser>
      */
     public function getUsers(): Collection
     {
         return $this->users;
     }
 
-    public function addUser(User $user): self
+    public function addUser(AbstractUser $user): self
     {
         if (!$this->users->contains($user)) {
             $this->users[] = $user;
@@ -65,7 +66,7 @@ class Promocode
         return $this;
     }
 
-    public function removeUser(User $user): self
+    public function removeUser(AbstractUser $user): self
     {
         $this->users->removeElement($user);
 
