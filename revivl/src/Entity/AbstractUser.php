@@ -25,7 +25,7 @@ abstract class AbstractUser implements UserInterface, PasswordAuthenticatedUserI
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private readonly int $id;
+    public readonly int $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private $email;

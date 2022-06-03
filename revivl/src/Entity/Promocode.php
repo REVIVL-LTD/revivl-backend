@@ -18,7 +18,7 @@ class Promocode
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private readonly int $id;
+    public readonly int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
     public readonly string $name;

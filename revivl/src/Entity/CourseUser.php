@@ -16,7 +16,7 @@ class CourseUser
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private readonly int $id;
+    public readonly int $id;
 
     #[ORM\ManyToOne(targetEntity: Course::class, inversedBy: 'patient')]
     private $course;

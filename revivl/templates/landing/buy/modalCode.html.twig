@@ -52,8 +52,7 @@
                 } else if (response.url) {
                     $('#CheckCode').modal('hide')
 
-                    await CheckOrder(response.url)
-                    Thanks()
+                    CheckOrder(response.url)
                 }
             } catch (e) {
 
@@ -90,28 +89,18 @@
     async function CheckOrder(url) {
 
         const orderId = url
-        let success = false
 
+        await (async () => {
+            while (await sleep(5000).then(async () => {
+                const response = await ApiService(
+                    "GET",
+                    `{{ path("api_check_order", {'id': '0'}) }}`.replace("0", orderId)
+                );
 
-        const response = await ApiService(
-            "GET",
-            `{{ path("api_check_order", {'id': '0'}) }}`.replace("0", orderId)
-        );
-        if (response && response.success) {
-            success = response.success
-        }
-
-        {#while (!success) {#}
-        {#    sleep(5000).then(async () => {#}
-        {#        const response = await ApiService(#}
-        {#            "GET",#}
-        {#            `{{ path("api_check_order", {'id': '0'}) }}`.replace("0", orderId)#}
-        {#        );#}
-        {#        if (response && response.success) {#}
-        {#            success = response.success#}
-        {#        }#}
-        {#    });#}
-        {#}#}
+                return !(response && response.success);
+            })) {}
+            Thanks()
+        })(orderId)
     }
 
 </script>
