@@ -9,7 +9,7 @@ use App\Repository\DoctorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Role;
+use App\Helper\Enum\Role;
 
 #[ORM\Entity(repositoryClass: DoctorRepository::class)]
 #[ORM\Table(name: 'doctor')]
@@ -27,12 +27,11 @@ class Doctor extends AbstractUser
         parent::__construct();
         $this->addDoctorRole();
         $this->courses = new ArrayCollection();
-
     }
 
     public function isDoctor(): bool
     {
-        return  in_array(Role::ROLE_DOCTOR->value, $this->getRoles());
+        return in_array(Role::ROLE_DOCTOR->value, $this->getRoles(), true);
     }
 
     /**

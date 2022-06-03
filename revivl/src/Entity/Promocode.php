@@ -18,35 +18,19 @@ class Promocode
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private readonly int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $name;
+    public readonly string $name;
 
     #[ORM\ManyToMany(targetEntity: AbstractUser::class, inversedBy: 'promocodes')]
     private $users;
 
-    public function __construct()
-    {
-        $this->status = AbstractStatus::ACTIVE->value;
-        $this->users = new ArrayCollection();
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
+    public function __construct(string $name)
     {
         $this->name = $name;
-
-        return $this;
+        $this->setStatus(AbstractStatus::ACTIVE->value);
+        $this->users = new ArrayCollection();
     }
 
     /**

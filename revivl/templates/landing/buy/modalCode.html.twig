@@ -1,0 +1,117 @@
+<div class="modal fade" data-id="{{ course.id }}" id="CheckCode" tabindex="-1" role="dialog" aria-labelledby="CheckCode" aria-hidden="true" style="display: none">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Verify your e-mail</div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div>
+                    <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut posuere massa arcu, ut lacinia tellus cursus quis. Curabitur iaculis turpis ut viverra dictum. Nunc risus felis, pellentesque sed sagittis sed, suscipit et dui.</h4>
+                    <div class="input-group mb-3">
+                        <input required id="code" type="number" class="form-control" onchange="checkCode()">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const modal = document.getElementById('newLesson')
+
+    var errors = null
+    const code = document.getElementById('code');
+
+    async function checkCode() {
+        if (code.value.length === 6) {
+            if (errors) {
+                removerCustomValidMessage(errors)
+            }
+
+            const body = {
+                "email": email.value,
+                "code": code.value
+            }
+
+            try {
+                const response = await ApiService(
+                    "POST",
+                    `{{ path("api_code_check") }}`,
+                    body
+                );
+
+                if (response && response.errors) {
+                    errors = response.errors
+                    getErrorsField(errors)
+                    if (!CheckForm('buy')) return false
+                } else if (response.url) {
+                    $('#CheckCode').modal('hide')
+
+                    await CheckOrder(response.url)
+                    Thanks()
+                }
+            } catch (e) {
+
+            }
+        }
+    }
+
+    function Thanks() {
+        var elements = document.getElementsByName('buy');
+        while(elements.length > 0){
+            elements[0].parentNode.removeChild(elements[0]);
+        }
+
+        const h2 = document.createElement('h2')
+        h2.textContent = "Thanks for your registration!"
+
+        const h4 = document.createElement('h4')
+        h4.textContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut posuere massa arcu, ut lacinia tellus cursus quis. Curabitur iaculis turpis ut viverra dictum."
+
+        const continueButton = document.createElement('button')
+        continueButton.style.width = '50px';
+        continueButton.style.height = '50px';
+        continueButton.setAttribute('title', 'continue')
+        continueButton.addEventListener('click', () => {
+            window.location.href="{{ path('app_main') }}";
+        })
+
+
+        document.body.appendChild(h2);
+        document.body.appendChild(h4);
+        document.body.appendChild(continueButton);
+    }
+
+    async function CheckOrder(url) {
+
+        const orderId = url
+        let success = false
+
+
+        const response = await ApiService(
+            "GET",
+            `{{ path("api_check_order", {'id': '0'}) }}`.replace("0", orderId)
+        );
+        if (response && response.success) {
+            success = response.success
+        }
+
+        {#while (!success) {#}
+        {#    sleep(5000).then(async () => {#}
+        {#        const response = await ApiService(#}
+        {#            "GET",#}
+        {#            `{{ path("api_check_order", {'id': '0'}) }}`.replace("0", orderId)#}
+        {#        );#}
+        {#        if (response && response.success) {#}
+        {#            success = response.success#}
+        {#        }#}
+        {#    });#}
+        {#}#}
+    }
+
+</script>

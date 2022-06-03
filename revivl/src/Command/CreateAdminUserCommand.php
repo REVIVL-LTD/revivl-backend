@@ -28,7 +28,7 @@ class CreateAdminUserCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('create:user:admin')
+            ->setName('app:create:user:admin')
             ->setDescription('New Admin')
         ;
     }

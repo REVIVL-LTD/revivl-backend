@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Course;
+use App\Helper\Status\AbstractStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -25,10 +26,7 @@ class CourseRepository extends ServiceEntityRepository
         parent::__construct($registry, Course::class);
     }
 
-    /**
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
+
     public function add(Course $entity, bool $flush = true): void
     {
         $this->_em->persist($entity);
@@ -37,10 +35,6 @@ class CourseRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
     public function remove(Course $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);
@@ -49,4 +43,11 @@ class CourseRepository extends ServiceEntityRepository
         }
     }
 
+    public function getAll()
+    {
+        $qb =$this->createQueryBuilder('course');
+        $qb->andWhere($qb->expr()->neq('course.status', AbstractStatus::ARCHIVE->value));
+
+        return $qb->getQuery()->getResult();
+    }
 }

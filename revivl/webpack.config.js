@@ -21,10 +21,6 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
 
-    .addEntry('base', './assets/base.js')
-    .addEntry('base-landing', './assets/base-landing.js')
-    .addEntry('base-lk', './assets/base-lk.js')
-    .addEntry('base-exception', './assets/base-exception.js')
     .addEntry('bootstrap', './assets/bootstrap.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
@@ -92,22 +88,14 @@ if (Encore.isProduction()) {
         {
             from: './assets/images',
             to: 'images/[path][name].[hash:8].[ext]',
-        },
-        {
-            from: './assets/media',
-            to: 'media/[path][name].[hash:8].[ext]',
-        },
+        }
     ])
 } else {
     Encore.copyFiles([
         {
             from: './assets/images',
             to: 'images/[path][name].[ext]',
-        },
-        {
-            from: './assets/media',
-            to: 'media/[path][name].[ext]',
-        },
+        }
     ])
 }
 

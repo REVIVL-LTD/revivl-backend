@@ -2,22 +2,22 @@
 
 namespace App\Entity;
 
+use App\Helper\Enum\Role;
 use App\Helper\Status\AbstractStatus;
 use App\Helper\Status\StatusTrait;
+use App\Helper\Status\UserStatus;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Role;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints\Unique;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\InheritanceType("JOINED")]
 #[ORM\DiscriminatorColumn(name: 'type', type: "integer")]
 #[ORM\DiscriminatorMap([1 => 'Patient', 2 => 'Doctor', 3 => 'Admin' ])]
-#[UniqueEntity(fields: "email", entityClass: "App\Entity\AbstractUser", repositoryMethod: "findByUniqueCriteria")]
+#[UniqueEntity(fields: ["email"], message: 'There is already an account with this email', entityClass: "App\Entity\AbstractUser", repositoryMethod: "findByUniqueCriteria")]
 abstract class AbstractUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use StatusTrait;
@@ -25,7 +25,7 @@ abstract class AbstractUser implements UserInterface, PasswordAuthenticatedUserI
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private readonly int $id;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private $email;
@@ -33,17 +33,12 @@ abstract class AbstractUser implements UserInterface, PasswordAuthenticatedUserI
     #[ORM\Column(type: 'json')]
     private $roles = [];
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: 'string', nullable: true)]
     private $password;
 
     public function __construct()
     {
         $this->status = AbstractStatus::ACTIVE->value;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getEmail(): ?string
@@ -105,6 +100,8 @@ abstract class AbstractUser implements UserInterface, PasswordAuthenticatedUserI
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        $this->setStatus(UserStatus::ACTIVE->value);
 
         return $this;
     }

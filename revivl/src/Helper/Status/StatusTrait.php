@@ -33,8 +33,7 @@ trait StatusTrait
     {
         $function = new \ReflectionClass($this);
         $statusClassName = 'App\Helper\Status\\' . $function->getShortName() . "Status";
-        $statusClass = new $statusClassName;
-        return $statusClass;
+        return new $statusClassName;
     }
 
     public function getStatusName() :string

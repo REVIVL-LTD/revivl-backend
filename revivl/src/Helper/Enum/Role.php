@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Helper\Enum;
+
 enum Role: string
 {
     case ROLE_USER = 'ROLE_USER';

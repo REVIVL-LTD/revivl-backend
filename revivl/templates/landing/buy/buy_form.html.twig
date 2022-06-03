@@ -1,0 +1,48 @@
+{{ form_start(form) }}
+ {{ form_widget(form) }}
+    <a href="#" onClick="openModalCheckCode();">Buy   €{{course.cost}}</a>
+{{ form_end(form) }}
+
+{% include 'landing/buy/modalCode.html.twig' %}
+
+<script>
+    var errors = null
+
+    const email = document.getElementById('buy_email')
+
+    async function openModalCheckCode() {
+        if (errors) {
+            removerCustomValidMessage(errors)
+        }
+        if (!CheckForm('buy')) return false
+
+        const body = {
+            "email": email.value,
+            "course": {{course.id}},
+            "name": document.getElementById('buy_name').value,
+            "surname": document.getElementById('buy_surname').value,
+            "birthday": document.getElementById('buy_birthday').value,
+            "sex": document.getElementById('buy_sex').value,
+            "phone": document.getElementById('buy_phone').value,
+            "postcode": document.getElementById('buy_postcode').value,
+            "city": document.getElementById('buy_city').value,
+            "address": document.getElementById('buy_address').value,
+            "promocode": document.getElementById('buy_promocode').value,
+
+        }
+
+        const response = await ApiService(
+            "POST",
+            `{{ path("api_send_email_check") }}`,
+            body
+        );
+
+        if (response && response.errors) {
+            errors = response.errors
+            getErrorsField(errors)
+            if (!CheckForm('buy')) return false
+        } else {
+            $('#CheckCode').modal('show')
+        }
+    }
+</script>

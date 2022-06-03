@@ -1,0 +1,55 @@
+const CheckForm = (formName) => {
+    return document.forms[formName].reportValidity();
+}
+
+const ApiService = async (method, url, data, params) => {
+    try {
+        const input = params ?  url + "?" + params : url
+
+        var response
+        if(method === "GET") {
+             response = await fetch(
+                input, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+        }else {
+             response = await fetch(
+                input, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data ? data : {})
+                }
+            );
+
+        }
+
+        return response.json();
+    }catch(error)  {
+        console.log(error.message)
+    }
+}
+
+const getErrorsField = (errors) => {
+    for(const [key, value] of Object.entries(errors)) {
+        const input = document.getElementById(key);
+        input.setCustomValidity(value);
+    }
+}
+
+const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds));
+}
+
+
+const removerCustomValidMessage = (errors) => {
+    for(const [key, value] of Object.entries(errors)) {
+        const input = document.getElementById(key);
+        input.setCustomValidity('');
+    }
+}

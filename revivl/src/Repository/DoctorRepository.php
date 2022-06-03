@@ -25,10 +25,6 @@ class DoctorRepository extends ServiceEntityRepository
         parent::__construct($registry, Doctor::class);
     }
 
-    /**
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
     public function add(Doctor $entity, bool $flush = true): void
     {
         $this->_em->persist($entity);
@@ -37,10 +33,6 @@ class DoctorRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
     public function remove(Doctor $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);

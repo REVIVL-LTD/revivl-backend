@@ -4,11 +4,12 @@ namespace App\Entity;
 
 use App\Entity\Traits\FioTrait;
 use App\Entity\Traits\SexTrait;
+use App\Helper\Enum\Role;
 use App\Repository\PatientRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Role;
 
 #[ORM\Entity(repositoryClass: PatientRepository::class)]
 #[ORM\Table(name: 'patient')]
@@ -17,8 +18,11 @@ class Patient extends AbstractUser
     use FioTrait;
     use SexTrait;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255)]
     private $phone;
+
+    #[ORM\Column(type: 'date')]
+    private $birthday;
 
     #[ORM\ManyToMany(targetEntity: Promocode::class, mappedBy: 'users')]
     private $promocodes;
@@ -26,8 +30,14 @@ class Patient extends AbstractUser
     #[ORM\ManyToOne(targetEntity: Address::class, inversedBy: 'users')]
     private $address;
 
-    #[ORM\ManyToMany(targetEntity: Course::class, inversedBy: 'courses')]
+    #[ORM\OneToMany(mappedBy: 'patient', targetEntity: CourseUser::class)]
     private $courses;
+
+    #[ORM\OneToMany(mappedBy: 'patient', targetEntity: CodeAuth::class)]
+    private $codes;
+
+    #[ORM\OneToMany(mappedBy: 'patient', targetEntity: Order::class)]
+    private $orders;
 
     public function __construct()
     {
@@ -35,6 +45,8 @@ class Patient extends AbstractUser
         $this->addPatientRole();
         $this->promocodes = new ArrayCollection();
         $this->courses = new ArrayCollection();
+        $this->codes = new ArrayCollection();
+        $this->orders = new ArrayCollection();
     }
 
     public function isPatient(): bool
@@ -62,9 +74,9 @@ class Patient extends AbstractUser
         return $this->promocodes;
     }
 
-    public function addPromocode(Promocode $promocode): self
+    public function addPromocode(?Promocode $promocode): self
     {
-        if (!$this->promocodes->contains($promocode)) {
+        if ($promocode &&!$this->promocodes->contains($promocode)) {
             $this->promocodes[] = $promocode;
             $promocode->addUser($this);
         }
@@ -94,27 +106,102 @@ class Patient extends AbstractUser
     }
 
     /**
-     * @return Collection<int, Course>
+     * @return Collection<int, CourseUser>
      */
     public function getCourses(): Collection
     {
         return $this->courses;
     }
 
-    public function addCourse(Course $course): self
+    public function addCourse(CourseUser $course): self
     {
+
         if (!$this->courses->contains($course)) {
             $this->courses[] = $course;
-            $course->addPatient($this);
+            $course->setPatient($this);
         }
 
         return $this;
     }
 
-    public function removeCourse(Course $course): self
+    public function removeCourse(CourseUser $course): self
     {
         if ($this->courses->removeElement($course)) {
-            $course->removePatient($this);
+            if ($course->getPatient() === $this) {
+                $course->setPatient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getBirthday(): DateTime
+    {
+        return $this->birthday;
+    }
+
+    public function setBirthday(DateTime $birthday): self
+    {
+        $this->birthday = $birthday;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CodeAuth>
+     */
+    public function getCodeAuth(): Collection
+    {
+        return $this->codes;
+    }
+
+    public function addCodeAuth(CodeAuth $code): self
+    {
+        if (!$this->codes->contains($code)) {
+            $this->codes[] = $code;
+            $code->setPatient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCodeAuth(CodeAuth $code): self
+    {
+        if ($this->codes->removeElement($code)) {
+            // set the owning side to null (unless already changed)
+            if ($code->getPatient() === $this) {
+                $code->setPatient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Order>
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    public function addOrder(Order $order): self
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders[] = $order;
+            $order->setPatient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Order $order): self
+    {
+        if ($this->orders->removeElement($order)) {
+            // set the owning side to null (unless already changed)
+            if ($order->getPatient() === $this) {
+                $order->setPatient(null);
+            }
         }
 
         return $this;

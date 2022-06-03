@@ -1,0 +1,18 @@
+<header class="header">
+    <div class="head__container">
+        <div class="header__body">
+            <a href="{{ path('app_main') }}" class="header__logo">
+                <img src="{{ asset('build/images/home.svg') }}"  width="20" height="20">
+            </a>
+            <div class="header__bar">
+                    <nav>
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <a href="{{ path('app_logout') }}">LOGIN</a>
+                        {% else %}
+                            <a href="{{ path('app_login') }}">LOGIN</a>
+                        {% endif %}
+                    </nav>
+                </div>
+        </div>
+    </div>
+</header>

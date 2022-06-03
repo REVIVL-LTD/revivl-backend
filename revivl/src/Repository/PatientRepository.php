@@ -2,12 +2,15 @@
 
 namespace App\Repository;
 
+use App\Entity\CourseUser;
 use App\Entity\Patient;
+use App\Helper\Status\CourseUserStatus;
+use App\Helper\Status\OrderStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
-
+use function Symfony\Component\DependencyInjection\Loader\Configurator\expr;
 
 
 /**
@@ -25,10 +28,6 @@ class PatientRepository extends ServiceEntityRepository
         parent::__construct($registry, Patient::class);
     }
 
-    /**
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
     public function add(Patient $entity, bool $flush = true): void
     {
         $this->_em->persist($entity);
@@ -37,10 +36,6 @@ class PatientRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
     public function remove(Patient $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);
@@ -49,4 +44,16 @@ class PatientRepository extends ServiceEntityRepository
         }
     }
 
+    public function checkEmail(string $email): ?Patient
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.email = :email')
+            ->setParameter('email', $email)
+            ->leftJoin('p.courses', 'cu')
+            ->andWhere('cu.status != :status')
+            ->setParameter('status', CourseUserStatus::OPEN->value)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

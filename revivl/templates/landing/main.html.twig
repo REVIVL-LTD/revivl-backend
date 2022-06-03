@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="block-course">
+        {% for course in courses %}
+
+            <ul class="course">Course name  - {{ course.name }}
+                <li class = "course_item">Description- {{ course.description }}</li>
+                <li class = "course_item">Doctor - {{ course.doctor }}</li>
+                <a href="{{ path("app_buy_course", {'id': course.id}) }}">Buy    €{{ course.cost }}</a>
+            </ul>
+
+        {% endfor %}
+    </div>
+{% endblock %}

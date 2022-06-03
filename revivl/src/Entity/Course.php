@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Traits\PhotoTrait;
+use App\Helper\Status\StatusTrait;
 use App\Repository\CourseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,11 +14,12 @@ use Doctrine\ORM\Mapping as ORM;
 class Course
 {
     use PhotoTrait;
+    use StatusTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private readonly int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
@@ -31,17 +33,12 @@ class Course
     #[ORM\ManyToOne(targetEntity: Doctor::class, inversedBy: 'courses')]
     private $doctor;
 
-    #[ORM\ManyToMany(targetEntity: Patient::class, mappedBy: 'patientss')]
+    #[ORM\OneToMany(mappedBy: 'courses', targetEntity: CourseUser::class)]
     private $patients;
 
     public function __construct()
     {
         $this->patients = new ArrayCollection();
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getName(): ?string
@@ -69,28 +66,53 @@ class Course
     }
 
     /**
-     * @return Collection<int, Patient>
+     * @return Collection<int, CourseUser>
      */
     public function getPatients(): Collection
     {
         return $this->patients;
     }
 
-    public function addPatient(Patient $patient): self
+    public function addPatient(CourseUser $patient): self
     {
         if (!$this->patients->contains($patient)) {
             $this->patients[] = $patient;
-            $patient->addCourse($this);
+            $patient->setCourse($this);
         }
 
         return $this;
     }
 
-    public function removePatient(Patient $patient): self
+    public function removePatient(CourseUser $patient): self
     {
         if ($this->patients->removeElement($patient)) {
-            $patient->removeCourse($this);
+            if ($patient->getCourse() === $this) {
+                $patient->setCourse(null);
+            }
         }
+
+        return $this;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getCost(): int
+    {
+        return $this->cost;
+    }
+    public function setCost(int $cost): self
+    {
+        $this->cost = $cost;
 
         return $this;
     }

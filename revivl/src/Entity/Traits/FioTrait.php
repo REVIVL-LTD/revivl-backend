@@ -12,6 +12,11 @@ trait FioTrait
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
+    public function __toString(): string
+    {
+        return $this->name . " " . $this->surname;
+    }
+
     public function getSurname(): string
     {
         return $this->surname;

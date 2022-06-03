@@ -14,21 +14,18 @@ class Address
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private readonly int $id;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $index;
+    #[ORM\Column(type: 'string', length: 255)]
+    private $postCode;
 
-    #[ORM\Column(type: 'string', length: 5, nullable: true)]
-    private $flat;
+    #[ORM\Column(type: 'string', length: 500)]
+    private $addressLine;
 
-    #[ORM\ManyToOne(targetEntity: City::class, inversedBy: 'addresses')]
+    #[ORM\Column(type: 'string', length: 255)]
     private $city;
 
-    #[ORM\ManyToOne(targetEntity: House::class, inversedBy: 'houses')]
-    private $streetHouse;
-
-    #[ORM\OneToMany(mappedBy: 'address', targetEntity: AbstractUser::class)]
+    #[ORM\OneToMany(mappedBy: 'address', targetEntity: Patient::class)]
     private $users;
 
     public function __construct()
@@ -36,53 +33,24 @@ class Address
         $this->users = new ArrayCollection();
     }
 
-    public function getId(): int
+    public function getPostCode(): ?string
     {
-        return $this->id;
+        return $this->postCode;
     }
 
-    public function getIndex(): ?string
+    public function setPostCode(string $postCode): self
     {
-        return $this->index;
-    }
-
-    public function setIndex(string $index): self
-    {
-        $this->index = $index;
+        $this->postCode = $postCode;
 
         return $this;
     }
 
-    public function getFlat(): ?string
-    {
-        return $this->flat;
-    }
-
-    public function setFlat(string $flat): self
-    {
-        $this->flat = $flat;
-
-        return $this;
-    }
-
-    public function getStreetHouse(): House
-    {
-        return $this->streetHouse;
-    }
-
-    public function setStreetHouse(House $streetHouse): self
-    {
-        $this->streetHouse = $streetHouse;
-
-        return $this;
-    }
-
-    public function getCity(): City
+    public function getCity(): string
     {
         return $this->city;
     }
 
-    public function setCity(City $city): self
+    public function setCity(string $city): self
     {
         $this->city = $city;
 
@@ -115,6 +83,18 @@ class Address
                 $user->setAddress(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAddressLine(): string
+    {
+        return $this->addressLine;
+    }
+
+    public function setAddressLine(string $addressLine): self
+    {
+        $this->addressLine = $addressLine;
 
         return $this;
     }

@@ -1,40 +1,40 @@
 FROM php:8.1-fpm
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-            ssh \
-            git \
-            zip \
-            unzip \
-            nano \
-            zlib1g-dev \
-            libxml2-dev \
-            libzip-dev \
-            libxslt-dev \
-            libyaml-dev \
-            unzip \
-            libfreetype6-dev \
-            libjpeg62-turbo-dev \
-            gnupg2 \
-            libpng-dev
+RUN apt update \
+    && apt install -y ssh \
+                     npm \
+                     git \
+                     zip \
+                     unzip \
+                     nano \
+                     zlib1g-dev \
+                     libxml2-dev \
+                     libzip-dev \
+                     libxslt-dev \
+                     libyaml-dev \
+                     libfreetype6-dev \
+                     libjpeg62-turbo-dev \
+                     gnupg2 \
+                     libpng-dev \
+    && docker-php-ext-install intl opcache \
+    && pecl install apcu \
+    && docker-php-ext-enable apcu \
+    && docker-php-ext-configure zip \
+    && docker-php-ext-install zip
 
-RUN  pecl install yaml && echo "extension=yaml.so" > /usr/local/etc/php/conf.d/ext-yaml.ini && docker-php-ext-enable yaml
+RUN npm install --global yarn
 
-RUN apt-get update && apt-get install -y \
-        libfreetype6-dev \
-        libjpeg62-turbo-dev \
-        libpng-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd
+
+#RUN  pecl install yaml && echo "extension=yaml.so" > /usr/local/etc/php/conf.d/ext-yaml.ini && docker-php-ext-enable yaml
+#RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+#RUN apt-get update && apt-get install -y yarn
 
 RUN apt install -y libpq-dev \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && docker-php-ext-install pdo pdo_pgsql pgsql
 
+RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 RUN apt-get update && apt-get install -y yarn
 
 RUN ln -sf /dev/stdout /var/log/fpm-access.log && \

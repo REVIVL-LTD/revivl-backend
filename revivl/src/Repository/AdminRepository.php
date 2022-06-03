@@ -25,10 +25,6 @@ class AdminRepository extends ServiceEntityRepository
         parent::__construct($registry, Admin::class);
     }
 
-    /**
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
     public function add(Admin $entity, bool $flush = true): void
     {
         $this->_em->persist($entity);
@@ -37,10 +33,6 @@ class AdminRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
     public function remove(Admin $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);
@@ -48,5 +40,4 @@ class AdminRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
-
 }

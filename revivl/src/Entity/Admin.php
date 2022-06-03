@@ -2,17 +2,11 @@
 
 namespace App\Entity;
 
-use App\Helper\Status\AbstractStatus;
-use App\Helper\Status\StatusTrait;
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Repository\AdminRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Role;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use App\Helper\Enum\Role;
 
-#[ORM\Entity(repositoryClass: DoctorRepository::class)]
+#[ORM\Entity(repositoryClass: AdminRepository::class)]
 #[ORM\Table(name: 'admin')]
 class Admin extends AbstractUser
 {
@@ -24,6 +18,6 @@ class Admin extends AbstractUser
 
     public function isAdmin(): bool
     {
-        return  in_array(Role::ROLE_ADMIN->value, $this->getRoles());
+        return in_array(Role::ROLE_PATIENT->value, $this->getRoles(), true);
     }
 }
