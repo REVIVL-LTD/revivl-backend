@@ -1,5 +1,7 @@
 # Развертывание проекта
-`docker-compose up --build -d`
+`docker-compose -f docer-compose.yml -f docker-compose.override.yml up --build -d` (локально)
+`docker-compose -f docer-compose.yml -f docker-compose.dev.yml up --build -d` (дев)
+`docker-compose -f docer-compose.yml -f docker-compose.prod.yml up --build -d` (прод)
 
 `docker-compose exec php bash`
 
@@ -16,7 +18,7 @@
 локальные доспуты 
 - http://localhost:8780 - основной сайт
 - http://localhost:8025 - mailhog
-## Тесты
+## Тесты (не реализованы)
 Запускать тесты нужно командой в терминале контейнера
 `vendor/bin/phpunit`
 
