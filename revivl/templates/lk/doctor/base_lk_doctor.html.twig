@@ -1,7 +1,13 @@
-{% extends 'base.html.twig' %}
+{% extends 'lk/base_lk.html.twig' %}
 
-{% block main %}
+{% block user %}
+    {{user.name}} {{user.surname}}
 
-Старница личного кабинета врача
-
+    Nutricolog ??
+{#    todo поменять #}
 {% endblock %}
+
+
+    {% block aside %}
+        {% include 'lk/doctor/aside.html.twig' %}
+    {% endblock %}

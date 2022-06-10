@@ -28,15 +28,21 @@ class LkPanelController extends AbstractController
         switch (true) {
             case $user->isAdmin():
                 return $this->render(
-                    'lk/admin/base_lk_admin.html.twig'
+                    'lk/admin/base_lk_admin.html.twig', [
+                        'user' => $user
+                    ]
                 );
             case $user->isDoctor():
                 return $this->render(
-                    'lk/doctor/base_lk_doctor.html.twig'
+                    'lk/doctor/base_lk_doctor.html.twig', [
+                        'user' => $user
+                    ]
                 );
             case $user->isPatient():
                 return $this->render(
-                    'lk/patient/base_lk_patient.html.twig'
+                    'lk/patient/base_lk_patient.html.twig', [
+                        'user' => $user
+                    ]
                 );
         }
 

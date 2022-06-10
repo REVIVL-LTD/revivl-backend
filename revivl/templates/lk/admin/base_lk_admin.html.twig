@@ -1,5 +1,12 @@
-{% extends 'base.html.twig' %}
+{% extends 'lk/base_lk.html.twig' %}
 
-{% block main %}
-    Старница личного кабинета админа
+{% block user %}
+    {{user.email}} <br>
+    Administrator
 {% endblock %}
+
+
+{% block aside %}
+    {% include 'lk/admin/aside.html.twig' %}
+{% endblock %}
+

@@ -1,8 +1,14 @@
-{% extends 'base.html.twig' %}
+{% extends 'lk/base_lk.html.twig' %}
 
+{% block user %}
+    {{user.name}} {{user.surname}}
 
-{% block main %}
-    Старница личного кабинета пациента
+    Patient ??
+    {#    todo поменять #}
 {% endblock %}
+
+    {% block aside %}
+        {% include 'lk/patient/aside.html.twig' %}
+    {% endblock %}
 
 
