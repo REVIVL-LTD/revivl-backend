@@ -25,11 +25,13 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-#            custom_authenticator: App\Security\LoginFormAuthenticator
-#            user_checker: App\Security\UserChecker
-#            entry_point: App\Security\AuthenticationEntryPoint
-#            logout:
-#                path: app_logout
+            custom_authenticator: App\Helper\Security\LoginFormAuthenticator
+            user_checker: App\Helper\Security\UserChecker
+            entry_point: App\Helper\Security\AuthenticationEntryPoint
+            logout:
+                path: app_logout
+#            login_throttling:
+#                max_attempts: 5
             form_login:
                 # "login" is the name of the route created previously
                 login_path: app_login

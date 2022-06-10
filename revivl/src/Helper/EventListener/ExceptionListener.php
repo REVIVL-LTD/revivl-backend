@@ -6,7 +6,9 @@ namespace App\Helper\EventListener;
 
 use App\Helper\Exception\ApiException;
 use App\Helper\Exception\ResponseApp;
+use Error;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\ErrorHandler\Error\UndefinedMethodError;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -27,24 +29,29 @@ class ExceptionListener
         $exception = $event->getThrowable();
         $this->logger->error($exception->getMessage(), $exception->getTrace());
 
+        $apiException = $exception;
+
         switch (true) {
             case $exception instanceof ClientException:
                 $statusCode = method_exists($exception, 'getCode') ?
                     $exception->getCode() : null;
 
                 $apiException = new ApiException(
+                    statusCode: $statusCode,
                     message: $exception->getResponse()?->getContent(),
                     detail: $this->environment === 'dev' ? ResponseApp::getStatusName($statusCode) : null,
-                    statusCode: $statusCode,
                 );
 
                 break;
 
-            case $exception instanceof ApiException:
-            default:
-                    $apiException = $exception;
-        }
+            case $exception instanceof Error:
+                $apiException = new ApiException(
+                    statusCode: $exception->getCode() ?: ResponseApp::HTTP_INTERNAL_SERVER_ERROR,
+                    message: $exception->getMessage(),
+                    detail: $this->environment === 'dev' ? ResponseApp::getStatusName($exception->getCode()) : null,
+                );
 
-        $event->setResponse(new JsonResponse($apiException->responseBody(), $apiException->getStatusCode()));
+        }
+        $event->setResponse(new JsonResponse($apiException->responseBody(), $apiException->getStatusCode() ?: ResponseApp::HTTP_INTERNAL_SERVER_ERROR));
     }
 }

@@ -20,22 +20,9 @@
                             </div>
                             <!--begin::Form-->
                             <form method="post" class="form">
-                                {% if error %}
-                                    {% if error.messageData['type'] is defined and error.messageData['email'] is defined %}
-                                        <div class="alert alert-danger">
-                                            {{ error.messageKey|trans(error.messageData, 'security') }}.
-                                            <a href="#" onclick="sendConfirmEmail('{{ error.messageData['email'] }}')">
-                                                Send the email again.
-                                            </a>
-                                        </div>
-                                    {% else %}
-                                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                                    {% endif %}
-                                {% endif %}
                                 <div class="form-group">
-                                    <input class="form-control form-control-solid h-auto py-5 px-6"  autocomplete="off" type="email" value="{{ last_username }}" name="email" placeholder="email" id="inputEmail" />
+                                    <input class="form-control form-control-solid h-auto py-5 px-6"  autocomplete="off" type="email" value="{{ last_username }}" name="email" placeholder="Эл. почта" id="inputEmail" />
                                 </div>
-
                                 <div class="form-group">
                                     <span class="d-flex" style="position: relative" id="show_hide_password">
                                         <input class="form-control form-control-solid h-auto py-5 px-6"  autocomplete="off" type="password" placeholder="password" name="password" id="inputPassword" />
@@ -45,9 +32,9 @@
                                     </span>
 
                                 </div>
-                                <input type="hidden" name="_csrf_token"
-{#                                       value="{{ csrf_tokenm('authenticate') }}"#}
-                                >
+
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
                                 <!--begin::Action-->
                                 <div class="form-group d-flex flex-wrap justify-content-between align-items-center">
                                     <a href="{{ path('app_forgot_password_request') }}" class="text-dark-50 text-hover-primary my-3 mr-2" id="kt_login_forgot">Recover password</a>

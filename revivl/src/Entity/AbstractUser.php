@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Helper\Enum\Role;
 use App\Helper\Status\AbstractStatus;
+use App\Helper\Status\AbstractUserStatus;
 use App\Helper\Status\StatusTrait;
 use App\Helper\Status\UserStatus;
 use App\Repository\UserRepository;
@@ -113,5 +114,40 @@ abstract class AbstractUser implements UserInterface, PasswordAuthenticatedUserI
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function isDoctor(): bool
+    {
+        return in_array(Role::ROLE_DOCTOR->value, $this->getRoles(), true);
+    }
+
+    public function isAdmin(): bool
+    {
+        return in_array(Role::ROLE_ADMIN->value, $this->getRoles(), true);
+    }
+
+    public function isPatient(): bool
+    {
+        return in_array(Role::ROLE_PATIENT->value, $this->getRoles(), true);
+    }
+
+    public function isActiveUser(): bool
+    {
+        return $this->getStatus() == UserStatus::ACTIVE;
+    }
+
+    public function isArchiveUser(): bool
+    {
+        return $this->getStatus() == UserStatus::ARCHIVE;
+    }
+
+    public function isWithoutPassword(): bool
+    {
+        return $this->getStatus() == UserStatus::WITHOUT_PASSWORD;
+    }
+
+    public function isNew(): bool
+    {
+        return $this->getStatus() == UserStatus::NEW;
     }
 }

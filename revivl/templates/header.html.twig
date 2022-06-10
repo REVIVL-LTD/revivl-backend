@@ -7,7 +7,7 @@
             <div class="header__bar">
                     <nav>
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                            <a href="{{ path('app_logout') }}">LOGIN</a>
+                            <a href="{{ path('app_logout') }}">LOGOUT</a>
                         {% else %}
                             <a href="{{ path('app_login') }}">LOGIN</a>
                         {% endif %}

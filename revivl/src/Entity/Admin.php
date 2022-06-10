@@ -15,9 +15,4 @@ class Admin extends AbstractUser
         parent::__construct();
         $this->addAdminRole();
     }
-
-    public function isAdmin(): bool
-    {
-        return in_array(Role::ROLE_PATIENT->value, $this->getRoles(), true);
-    }
 }

@@ -29,11 +29,6 @@ class Doctor extends AbstractUser
         $this->courses = new ArrayCollection();
     }
 
-    public function isDoctor(): bool
-    {
-        return in_array(Role::ROLE_DOCTOR->value, $this->getRoles(), true);
-    }
-
     /**
      * @return Collection<int, Course>
      */

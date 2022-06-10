@@ -49,11 +49,6 @@ class Patient extends AbstractUser
         $this->orders = new ArrayCollection();
     }
 
-    public function isPatient(): bool
-    {
-        return  in_array(Role::ROLE_PATIENT->value, $this->getRoles());
-    }
-
     public function getPhone(): string
     {
         return $this->phone;
