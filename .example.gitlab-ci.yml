@@ -15,7 +15,8 @@ build-develop:
   tags:
     - develop
   script:
-    - docker-compose -f docker-compose.dev-deploy.yml build
+    - docker-compose -f docker-compose.yml -f docker-compose.dev.yml build
+
   only:
     - develop
 
@@ -27,11 +28,10 @@ deploy-develop:
   tags:
     - develop
   script:
-    - docker-compose -f docker-compose.develop.yml build
-    - docker-compose -f docker-compose.develop.yml up -d
-    - docker-compose -f docker-compose.develop.yml exec -T php sh -c "composer install &&
+    - docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+    - docker-compose -f -f docker-compose.yml -f docker-compose.dev.yml exec -T php sh -c "composer install &&
                     php bin/console doctrine:migration:migrate  --no-interaction &&
-                    php bin/console create:user:admin &&
+                    php bin/console app:create:user:admin --no-interaction &&
                     yarn install &&
                     yarn encore dev"
   environment:
@@ -51,7 +51,7 @@ build-prod:
   tags:
     - prod
   script:
-    - docker-compose -f docker-compose.production.yml build
+    - docker-compose -f docker-compose.yml -f docker-compose.prod.yml build
   only:
     - master
 
@@ -65,13 +65,13 @@ deploy-prod:
   tags:
     - prod
   script:
-    - docker-compose -f docker-compose.production.yml up -d
-    - docker-compose -f docker-compose.production.yml exec -T php sh -c "composer install &&
-          php bin/console doctrine:migration:migrate &&
-          php bin/console create:user:admin &&
-          yarn install &&
-          yarn encore prod"
-    - docker-compose -f  docker-compose.production.yml logs
+    - docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+    - docker-compose -f -f docker-compose.yml -f docker-compose.prod.yml exec -T revivl-php sh -c "composer install &&
+      php bin/console doctrine:migration:migrate  --no-interaction &&
+      php bin/console app:create:user:admin --no-interaction &&
+      yarn install &&
+      yarn encore dev"
+    - docker-compose -f  docker-compose.prod.yml logs
   environment:
     name: prod
   only:

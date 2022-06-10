@@ -4,11 +4,7 @@ namespace App\Controller\Security;
 
 use App\Controller\AbstractController;
 
-use App\Entity\Patient;
-use App\Form\BuyType;
-use Spatie\UrlSigner\MD5UrlSigner;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;

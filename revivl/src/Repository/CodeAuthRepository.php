@@ -42,7 +42,7 @@ class CodeAuthRepository extends ServiceEntityRepository
         }
     }
 
-    public function check($code, $email)
+    public function check(int $code, string $email)
     {
         $qb = $this->createQueryBuilder('cc');
         $qb->andWhere('cc.code = :code')

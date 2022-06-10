@@ -3,9 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Course;
-use App\Entity\Homework;
 use App\Entity\Patient;
-use App\Form\HomeworkType;
 use App\Form\BuyType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +18,7 @@ class LandingController extends AbstractController
 {
     //todo прикрутить оплату
     #[Route('/{id}/buy', name: 'app_buy_course', methods: ["GET"])]
-    public function getBuyCourse(Course $course, Request $request)
+    public function getBuyCourse(Course $course, Request $request): Response
     {
         $patient = new Patient();
         $form = $this->createForm(BuyType::class, $patient);
@@ -39,8 +37,4 @@ class LandingController extends AbstractController
             'courses' => $this->entityManager->getRepository(Course::class)->getAll(),
         ]);
     }
-
-
-
-
 }

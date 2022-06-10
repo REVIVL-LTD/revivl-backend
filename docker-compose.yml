@@ -5,11 +5,9 @@ services:
     image: postgres
     restart: unless-stopped
     environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: revivl_db
-      POSTGRES_USER: postgres
-    ports:
-      - '5437:5432'
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_USER
     volumes:
       - ./postgres:/var/lib/postgres
     networks:
@@ -30,8 +28,6 @@ services:
   nginx:
     image: nginx:latest
     restart: always
-    ports:
-      - '8780:80'
     volumes:
       - ./revivl:/var/www/revivl
       - ./build/nginx/develop:/etc/nginx/conf.d/
@@ -47,6 +43,18 @@ services:
     ports:
       - 1025:1025
       - 8025:8025
+    networks:
+      - revivl
+
+  cron:
+    build:
+      context: ./build/cron
+    restart: always
+    volumes:
+      - ./revivl:/var/www/revivl:delegated
+      - ./revivl/public:/var/www/revivl/public:rw,cached
+    depends_on:
+      - php-fpm
     networks:
       - revivl
 

@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  postgres:
+    container_name: revivl-db
+
+  php-fpm:
+    container_name: revivl-php
+    entrypoint: [ "bash", "-c", "composer install  --no-interaction && yarn install && php-fpm"]
+    environment:
+      - SYMFONY_ENV
+      - APP_ENV
+      - POSTGRES_HOST
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+
+  nginx:
+    container_name: revivl-nginx
+    ports:
+      - '80:80'
+
+  mailhog:
+    restart: always
+
+  cron:
+    restart: always
+

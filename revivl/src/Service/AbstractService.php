@@ -12,7 +12,8 @@ abstract class AbstractService
         protected EntityManagerInterface $entityManager,
         protected ValidatorInterface $validator,
         protected SerializerInterface $serializer,
-        protected ValidateService $validateService
+        protected ValidateService $validateService,
+        protected  MailService $mailService
     )
     {
     }

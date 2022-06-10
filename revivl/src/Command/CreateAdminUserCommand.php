@@ -39,7 +39,7 @@ class CreateAdminUserCommand extends Command
 
         $question = new Question('Email (admin@admin.ru):', 'admin@admin.ru');
         $email = $helper->ask($input, $output, $question);
-        $this->validateService->emailValid($email);
+        $this->validateService->validateEmail($email);
         if ($this->em->getRepository(AbstractUser::class)->findOneBy(['email' => $email])) {
             throw new RuntimeException('Email already use');
         }
