@@ -12,3 +12,13 @@ services:
   nginx:
     ports:
       - '8780:80'
+
+
+  php-fpm:
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: revivl_db
+      POSTGRES_USER: postgres
+      MAILER_DSN: 'smtp://mailhog:1025'
+      MAILER_SENDER: 'revivl@sendler.com'
+      MAILER_HEADER: 'REVIVL'

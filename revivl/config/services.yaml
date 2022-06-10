@@ -27,3 +27,10 @@ services:
     App\Helper\EventListener\ExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
+    App\Controller\Security\ResetPasswordController:
+        autowire: true
+        autoconfigure: false
+        arguments:
+            $emailSender: '%env(resolve:MAILER_SENDER)%'
+            $emailHeader: '%env(resolve:MAILER_HEADER)%'

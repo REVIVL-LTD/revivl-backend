@@ -8,12 +8,15 @@ services:
     container_name: revivl-php
     entrypoint: [ "bash", "-c", "composer install  --no-interaction && yarn install && php-fpm" ]
     environment:
-      SYMFONY_ENV:
-      APP_ENV:
-      POSTGRES_HOST:
-      POSTGRES_DB:
-      POSTGRES_USER:
-      POSTGRES_PASSWORD:
+      - SYMFONY_ENV
+      - APP_ENV
+      - POSTGRES_HOST
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - MAILER_DSN
+      - MAILER_SENDER
+      - MAILER_HEADER
 
   nginx:
     container_name: revivl-nginx

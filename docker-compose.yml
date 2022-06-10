@@ -15,6 +15,13 @@ services:
 
   php-fpm:
     restart: always
+    environment:
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - MAILER_DSN
+      - MAILER_SENDER
+      - MAILER_HEADER
     build:
       context: .
       dockerfile: ./build/php-fpm/Dockerfile

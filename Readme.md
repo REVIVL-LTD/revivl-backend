@@ -1,7 +1,9 @@
 # Развертывание проекта
-`docker-compose -f docer-compose.yml -f docker-compose.override.yml up --build -d` (локально)
-`docker-compose -f docer-compose.yml -f docker-compose.dev.yml up --build -d` (дев)
-`docker-compose -f docer-compose.yml -f docker-compose.prod.yml up --build -d` (прод)
+`docker-compose -f docker-compose.yml -f docker-compose.override.yml up --build -d` (локально)
+
+`docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build -d` (дев)
+
+`docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d` (прод)
 
 `docker-compose exec php bash`
 
