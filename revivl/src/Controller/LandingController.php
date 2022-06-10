@@ -12,7 +12,6 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class LandingController
  * @package App\Controller
- *
 */
 class LandingController extends AbstractController
 {

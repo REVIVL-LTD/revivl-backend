@@ -23,14 +23,15 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
 
     App\Helper\EventListener\ExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
 
     App\Controller\Security\ResetPasswordController:
-        autowire: true
-        autoconfigure: false
         arguments:
             $emailSender: '%env(resolve:MAILER_SENDER)%'
             $emailHeader: '%env(resolve:MAILER_HEADER)%'

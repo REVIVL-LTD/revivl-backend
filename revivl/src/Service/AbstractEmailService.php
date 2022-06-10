@@ -14,11 +14,6 @@ abstract class AbstractEmailService
     {
     }
 
-    /**
-     * @param string $mailTo
-     * @param string $subject
-     * @param string $text
-     */
     public function sendText(string $mailTo, string $subject, string $text): void
     {
         $email = (new Email())
@@ -32,12 +27,6 @@ abstract class AbstractEmailService
         }
     }
 
-    /**
-     * @param string $mailTo
-     * @param string $subject
-     * @param string $template
-     * @param array $context
-     */
     public function sendTemplated(string $mailTo, string $subject, string $template, array $context = []): void
     {
         $email = (new TemplatedEmail())

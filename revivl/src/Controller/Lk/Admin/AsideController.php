@@ -11,16 +11,13 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class LkPanelController
  * @package App\Controller\Lk
- *
- * @Route("/lk/admin")
- * @IsGranted("ROLE_ADMIN")
  */
+#[Route('/lk/admin')]
+#[IsGranted('ROLE_ADMIN')]
 class AsideController extends AbstractController
 {
 
-    /**
-     * @Route("/sales", name="app_lk_admin_sales", methods={"GET"})
-     */
+    #[Route('/sales', name: 'app_lk_admin_sales', methods: ["GET"])]
     public function sales(): Response
     {
         $sales = [];
@@ -33,9 +30,7 @@ class AsideController extends AbstractController
 
     }
 
-    /**
-     * @Route("/users", name="app_lk_admin_users", methods={"GET"})
-     */
+    #[Route('/users', name: 'app_lk_admin_users', methods: ["GET"])]
     public function users(): Response
     {
         $users = [];
@@ -48,9 +43,7 @@ class AsideController extends AbstractController
 
     }
 
-    /**
-     * @Route("/courses", name="app_lk_admin_courses", methods={"GET"})
-     */
+    #[Route('/courses', name: 'app_lk_admin_courses', methods: ["GET"])]
     public function courses(): Response
     {
         $courses = $this->entityManager->getRepository(Course::class)->findAll();
@@ -63,9 +56,7 @@ class AsideController extends AbstractController
 
     }
 
-    /**
-     * @Route("/promos", name="app_lk_admin_promos", methods={"GET"})
-     */
+    #[Route('/promos', name: 'app_lk_admin_promos', methods: ["GET"])]
     public function promos(): Response
     {
         $promos = [];
@@ -78,9 +69,7 @@ class AsideController extends AbstractController
 
     }
 
-    /**
-     * @Route("/meals", name="app_lk_admin_meals", methods={"GET"})
-     */
+    #[Route('/meals', name: 'app_lk_admin_meals', methods: ["GET"])]
     public function meals(): Response
     {
         $meals = [];

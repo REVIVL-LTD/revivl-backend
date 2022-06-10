@@ -12,15 +12,13 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class LkPanelController
  * @package App\Controller\Lk
- *
- * @Route("/lk")
  */
+#[Route('/lk')]
 class LkPanelController extends AbstractController
 {
-    /**
-     * @Route("", name="app_lk", methods={"GET"})
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
-     */
+
+    #[Route('', name: 'app_lk', methods: ["GET"])]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function index(): Response
     {
         /** @var AbstractUser $user */

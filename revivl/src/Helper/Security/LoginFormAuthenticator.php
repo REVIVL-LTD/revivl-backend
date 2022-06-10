@@ -29,21 +29,12 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
-    /** @var string  */
     public const LOGIN_ROUTE = 'app_login';
 
-
-    /** @var UrlGeneratorInterface  */
     private UrlGeneratorInterface $urlGenerator;
 
-    /** @var UserRepository  */
     private UserRepository $userRepository;
 
-    /**
-     * LoginFormAuthenticator constructor.
-     * @param UrlGeneratorInterface $urlGenerator
-     * @param UserRepository $userRepository
-     */
     public function __construct(
         UrlGeneratorInterface $urlGenerator,
         UserRepository $userRepository
@@ -53,12 +44,6 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         $this->userRepository = $userRepository;
     }
 
-    /**
-     * @param Request $request
-     * @param TokenInterface $token
-     * @param string $firewallName
-     * @return RedirectResponse
-     */
     public function onAuthenticationSuccess(
         Request $request,
         TokenInterface $token,
@@ -78,11 +63,6 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         return new RedirectResponse($this->urlGenerator->generate('app_main'));
     }
 
-    /**
-     * @param Request $request
-     * @param AuthenticationException $exception
-     * @return Response
-     */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response
     {
         if ($request->hasSession()) {
@@ -114,23 +94,21 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         return new RedirectResponse($url);
     }
 
-    /**
-     * @param Request $request
-     * @return string
-     */
     protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
 
-    /**
-     * @param string $url
-     * @return bool
-     */
     protected function checkIsApiUrl(string $url): bool
     {
         $request = Request::create($url);
-        return SecurityService::checkIsApiRequestByUrlContain($request);
+        return self::checkIsApiRequestByUrlContain($request);
+    }
+
+    private static function checkIsApiRequestByUrlContain(Request $request): bool
+    {
+        $urlRoute = $request->getPathInfo();
+        return str_contains($urlRoute, '/api/');
     }
 
     public function authenticate(Request $request): Passport
