@@ -33,6 +33,10 @@ class LandingController extends AbstractController
     #[Route('', name: 'app_main', methods: "GET")]
     public function getMainPage(): Response
     {
+        if($this->getUser()) {
+            return $this->redirectToRoute("app_lk");
+        }
+
         return $this->render('landing/main.html.twig', [
             'courses' => $this->entityManager->getRepository(Course::class)->getAll(),
         ]);
