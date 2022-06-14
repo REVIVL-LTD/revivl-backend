@@ -11,7 +11,7 @@
 
 `php bin/console doctrine:migrations:migrate`
 
-`php bin/console create:user:admin`
+`php bin/console app:create:user:admin`
 
 `yarn install`
 
