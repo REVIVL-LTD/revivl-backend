@@ -43,18 +43,7 @@ class AsideController extends AbstractController
 
     }
 
-    #[Route('/courses', name: 'app_lk_admin_courses', methods: ["GET"])]
-    public function courses(): Response
-    {
-        $courses = $this->entityManager->getRepository(Course::class)->findAll();
-        return $this->render(
-            'lk/admin/courses/list.html.twig', [
-                'courses' => $courses,
-                'user' => $this->getUser(),
-            ]
-        );
 
-    }
 
     #[Route('/promos', name: 'app_lk_admin_promos', methods: ["GET"])]
     public function promos(): Response

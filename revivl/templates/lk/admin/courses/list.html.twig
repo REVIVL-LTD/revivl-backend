@@ -3,5 +3,45 @@
 {% block central %}
 
 
+    <a href="{{ path('app_course_new') }}">Create new course</a>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Program name </th>
+                <th>Abbreviation</th>
+                <th>Status</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for course in courses %}
+                <tr>
+                    <td>
+                        <a href="{{ path('app_course_show', {'id': course.id}) }}">{{ course.name }}</a>
+                    </td>
+                    <td>{{ course.abbreviation }}</td>
+                    <td>{{ course.status }}</td>
+{#                    <td>{{ course.statusName }}</td>#}
+                    <td>{{ course.cost }}</td>
+
+                    <td>
+                        <a href="">Publish</a>
+                        <a href="">Archive</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
 
 {% endblock %}
+
+{#<a href="{{ path('app_course_show', {'id': course.id}) }}">Publish</a>#}
+{#<a href="{{ path('app_course_edit', {'id': course.id}) }}">Archive</a>#}

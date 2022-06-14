@@ -49,7 +49,7 @@ class AutorizationService extends AbstractService
 
         $address = $this->entityManager->getRepository(Address::class)->findOneBy(['postCode' => $body->postCode, 'city' => $body->city, 'addressLine' => $body->address]) ??
             (new Address())->setPostCode($body->postCode)->setCity($body->city)->setAddressLine($body->address);
-
+//todo
         $promocode = $this->entityManager->getRepository(Promocode::class)->findOneBy(['name' => $body->promocode]);
 
         $user = (new Patient())

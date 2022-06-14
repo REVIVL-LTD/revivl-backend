@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Course{% endblock %}
+
+{% block body %}
+
+    <a href="{{ path('app_lk_admin_courses') }}">back to courses</a>
+
+
+    <h1>{{ course.name }}     {{ course.status }}</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Name</th>
+                <td>{{ course.name }}</td>
+            </tr>
+            <tr>
+                <th>Abbreviation</th>
+                <td>{{ course.abbreviation }}</td>
+            </tr>
+
+            <tr>
+                <th>Description</th>
+                <td>{{ course.description }}</td>
+            </tr>
+            <tr>
+                <th>Course containts</th>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Patient Name</th>
+            <th>Patient Email</th>
+            <th>Date of Purchase</th>
+            <th>Discount</th>
+            <th>Date of Birt</th>
+            <th>Phone number</th>
+            <th>City</th>
+        </tr>
+        </thead>
+{#        <tbody>#}
+{#        {% for patient in course.patients %}#}
+{#            <tr>#}
+{#                <td>#}
+{#                    <a href="{{ path('app_patient_show', {'id': patient.id}) }}">{{ patient.patient.name }}</a>#}
+{#                </td>#}
+{#                <td>{{ patient.patient.email }}</td>#}
+{#            </tr>#}
+{#        {% else %}#}
+{#            <tr>#}
+{#                <td colspan="8">no records found</td>#}
+{#            </tr>#}
+{#        {% endfor %}#}
+        </tbody>
+    </table>
+
+
+    <a href="{{ path('app_course_edit', {'id': course.id}) }}">edit</a>
+{% endblock %}
