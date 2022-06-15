@@ -8,7 +8,7 @@ use App\Entity\Course;
 use App\Entity\CourseUser;
 use App\Entity\Order;
 use App\Entity\Patient;
-use App\Entity\Promocode;
+use App\Entity\Promo;
 use App\Helper\DTO\EmailAuthDto;
 use App\Helper\Exception\ApiException;
 use App\Helper\Status\OrderStatus;
@@ -50,7 +50,7 @@ class AutorizationService extends AbstractService
         $address = $this->entityManager->getRepository(Address::class)->findOneBy(['postCode' => $body->postCode, 'city' => $body->city, 'addressLine' => $body->address]) ??
             (new Address())->setPostCode($body->postCode)->setCity($body->city)->setAddressLine($body->address);
 //todo
-        $promocode = $this->entityManager->getRepository(Promocode::class)->findOneBy(['name' => $body->promocode]);
+        $promo = $this->entityManager->getRepository(Promo::class)->findOneBy(['name' => $body->promocode]);
 
         $user = (new Patient())
             ->setStatus(UserStatus::NEW->value)
@@ -61,7 +61,7 @@ class AutorizationService extends AbstractService
             ->setSex($body->getSex())
             ->setPhone($body->phone)
             ->setAddress($address)
-            ->addPromocode($promocode)
+            ->addPromo($promo)
         ;
 
         $courseUser = (new CourseUser())->setPatient($user)->setCourse($course);

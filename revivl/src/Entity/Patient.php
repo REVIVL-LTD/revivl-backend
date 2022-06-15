@@ -24,8 +24,8 @@ class Patient extends AbstractUser
     #[ORM\Column(type: 'date')]
     private $birthday;
 
-    #[ORM\ManyToMany(targetEntity: Promocode::class, mappedBy: 'users')]
-    private $promocodes;
+    #[ORM\ManyToMany(targetEntity: Promo::class, mappedBy: 'users')]
+    private $promos;
 
     #[ORM\ManyToOne(targetEntity: Address::class, inversedBy: 'users')]
     private $address;
@@ -43,7 +43,7 @@ class Patient extends AbstractUser
     {
         parent::__construct();
         $this->addPatientRole();
-        $this->promocodes = new ArrayCollection();
+        $this->promos = new ArrayCollection();
         $this->courses = new ArrayCollection();
         $this->codes = new ArrayCollection();
         $this->orders = new ArrayCollection();
@@ -62,27 +62,27 @@ class Patient extends AbstractUser
     }
 
     /**
-     * @return Collection<int, Promocode>
+     * @return Collection<int, Promo>
      */
-    public function getPromocodes(): Collection
+    public function getPromos(): Collection
     {
-        return $this->promocodes;
+        return $this->promos;
     }
 
-    public function addPromocode(?Promocode $promocode): self
+    public function addPromo(?Promo $promo): self
     {
-        if ($promocode &&!$this->promocodes->contains($promocode)) {
-            $this->promocodes[] = $promocode;
-            $promocode->addUser($this);
+        if ($promo &&!$this->promos->contains($promo)) {
+            $this->promos[] = $promo;
+            $promo->addUser($this);
         }
 
         return $this;
     }
 
-    public function removePromocode(Promocode $promocode): self
+    public function removePromo(Promo $promo): self
     {
-        if ($this->promocodes->removeElement($promocode)) {
-            $promocode->removeUser($this);
+        if ($this->promos->removeElement($promo)) {
+            $promo->removeUser($this);
         }
 
         return $this;

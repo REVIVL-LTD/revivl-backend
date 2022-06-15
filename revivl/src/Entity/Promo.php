@@ -4,14 +4,14 @@ namespace App\Entity;
 
 use App\Helper\Status\AbstractStatus;
 use App\Helper\Status\StatusTrait;
-use App\Repository\PromocodeRepository;
+use App\Repository\PromoRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: PromocodeRepository::class)]
-#[ORM\Table(name: 'promocode')]
-class Promocode
+#[ORM\Entity(repositoryClass: PromoRepository::class)]
+#[ORM\Table(name: 'promo')]
+class Promo
 {
     use StatusTrait;
 
@@ -23,7 +23,7 @@ class Promocode
     #[ORM\Column(type: 'string', length: 255)]
     public readonly string $name;
 
-    #[ORM\ManyToMany(targetEntity: AbstractUser::class, inversedBy: 'promocodes')]
+    #[ORM\ManyToMany(targetEntity: AbstractUser::class, inversedBy: 'promos')]
     private $users;
 
     public function __construct(string $name)
