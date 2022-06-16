@@ -9,7 +9,7 @@ use App\Entity\Course;
 use App\Entity\CourseUser;
 use App\Entity\Order;
 use App\Entity\Patient;
-use App\Entity\Promo;
+use App\Entity\Promocode;
 use App\Helper\DTO\BasketDTO;
 use App\Helper\DTO\CodeAuthDto;
 use App\Helper\DTO\EmailAuthDto;
