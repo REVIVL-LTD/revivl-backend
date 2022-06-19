@@ -26,6 +26,9 @@ class Promocode
     #[ORM\ManyToMany(targetEntity: AbstractUser::class, inversedBy: 'promocodes')]
     private $users;
 
+    #[ORM\ManyToOne(targetEntity: Promo::class, inversedBy: 'promo')]
+    private $promo;
+
     public function __construct(string $name)
     {
         $this->name = $name;

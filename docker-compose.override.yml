@@ -22,3 +22,6 @@ services:
       MAILER_DSN: 'smtp://mailhog:1025'
       MAILER_SENDER: 'revivl@sendler.com'
       MAILER_HEADER: 'REVIVL'
+      PHP_IDE_ONFIG: serverName=revivlokok
+    extra_hosts:
+      - host.docker.internal:host-gateway
