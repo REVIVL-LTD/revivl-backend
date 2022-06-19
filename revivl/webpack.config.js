@@ -99,4 +99,20 @@ if (Encore.isProduction()) {
     ])
 }
 
+if (Encore.isProduction()) {
+    Encore.copyFiles([
+        {
+            from: './assets/css/',
+            to: 'css/[path][name].[hash:8].[ext]',
+        }
+    ])
+} else {
+    Encore.copyFiles([
+        {
+            from: './assets/css/',
+            to: 'css/[path][name].[ext]',
+        }
+    ])
+}
+
 module.exports = Encore.getWebpackConfig();

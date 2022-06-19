@@ -3,53 +3,203 @@
 {% block title %}LOGIN{% endblock %}
 
 {% block body %}
-    <body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled page-loading">
-        <div class="d-flex flex-column flex-root">
-            <!--begin::Login-->
-            <div class="login login-1 login-signin-on d-flex flex-column flex-lg-row flex-column-fluid bg-white" id="kt_login">
-                <!--begin::Aside-->
-                <!--begin::Content-->
-                <div class="d-flex flex-column flex-row-fluid position-relative p-7 overflow-hidden">
-                    <!--begin::Content body-->
-                    <div class="d-flex flex-column-fluid flex-center mt-30 mt-lg-0">
-                        <!--begin::Signin-->
-                        <div class="login-form login-signin">
-                            <div class="text-center mb-10 mb-lg-20">
-                                <h3 class="font-size-h1">LOGIN</h3>
-                                <p class="text-muted font-weight-bold">Enter your email and password</p>
-                            </div>
-                            <!--begin::Form-->
-                            <form method="post" class="form">
-                                <div class="form-group">
-                                    <input class="form-control form-control-solid h-auto py-5 px-6"  autocomplete="off" type="email" value="{{ last_username }}" name="email" placeholder="Эл. почта" id="inputEmail" />
-                                </div>
-                                <div class="form-group">
-                                    <span class="d-flex" style="position: relative" id="show_hide_password">
-                                        <input class="form-control form-control-solid h-auto py-5 px-6"  autocomplete="off" type="password" placeholder="password" name="password" id="inputPassword" />
-                                    <div class="input-group-addon w-50px h-100 d-flex align-items-center justify-content-center" style="position: absolute; right: 0">
-                                        <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
-                                    </div>
-                                    </span>
-
-                                </div>
-
-                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-                                <!--begin::Action-->
-                                <div class="form-group d-flex flex-wrap justify-content-between align-items-center">
-                                    <a href="{{ path('app_forgot_password_request') }}" class="text-dark-50 text-hover-primary my-3 mr-2" id="kt_login_forgot">Recover password</a>
-                                    <button type="submit" id="kt_login_signin_submit" class="btn btn-primary font-weight-bold px-9 py-4 my-3">LOGIN</button>
-                                </div>
-                                <!--end::Action-->
-                            </form>
-                            <!--end::Form-->
+    <style type="text/css">
+        .mainWrapper{
+            height: 100%;
+            width: 100%;
+            background: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            z-index: 100;
+        }
+        .mainWrapper::before{
+            content: '';
+            position: absolute;
+            width: 1104px;
+            height: 1104px;
+            left: 432px;
+            top: 51px;
+            background: linear-gradient(125.15deg, #0098CB 41.34%, rgba(0, 152, 203, 0) 96.67%);
+            opacity: 0.20;
+            filter: blur(600px);
+            z-index: -10;
+        }
+        .mainWrapper::after{
+            content: '';
+            position: absolute;
+            width: 891px;
+            height: 891px;
+            left: 13px;
+            top: -52px;
+            background: linear-gradient(303.68deg, #B21180 41.48%, rgba(178, 17, 128, 0) 87.39%);
+            opacity: 0.20;
+            filter: blur(600px);
+            z-index: -10;
+        }
+        .authBlock{
+            width: 688px;
+            height: 441px;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid #FFFFFF;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .registrationBlock{
+            width: 280px;
+            align-items: center;
+            text-align: center;
+        }
+        .title{
+            font-weight: 400;
+            font-size: 39px;
+            line-height: 140%;
+            color: #003A70;
+        }
+        .mainButton{
+            padding: 12px 24px;
+            width: 148px;
+            height: 46px;
+            background: #0098CB;
+            border-radius: 24px;
+            color: #ffffff;
+            border: none;
+            margin-bottom: 28px;
+            font-weight: 500;
+            font-size: 16px;
+        }
+        .mainButton:hover{
+            cursor: pointer;
+        }
+        .blueButton:hover{
+            cursor: pointer;
+        }
+        .blueButton{
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 140%;
+            text-align: center;
+            color: #0098CB;
+        }
+        #password, #repeat_password {
+            border-bottom: 1px solid #0098CB;
+        }
+        .eye{
+            color: gray;
+            display: none;
+        }
+        .eye:hover{
+            cursor: pointer;
+        }
+        .eyeDisabled{
+            color: #0098CB;
+        }
+        .question{
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 140%;
+        }
+        @media(max-width: 700px){
+            .authBlock{
+                width: 92%;
+                height: 395px;
+            }
+            .registrationBlock{
+                max-width: 296px;
+            }
+            .title{
+                font-size: 25px;
+            }
+            .mainButton{
+                padding: 12px;
+                width: 124px;
+                height: 42px;
+                margin-bottom: 28px;
+                font-weight: 500;
+                font-size: 13px;
+            }
+            .blueButton{
+                font-size: 13px;
+            }
+            .question{
+                font-size: 13px;
+            }
+        }
+    </style>
+    <body>
+        <div class="mainWrapper">
+            <div class="authBlock">
+                <div class="registrationBlock">
+                    <img style="width: 65px; height: 65px; margin-bottom: 12px"
+                         src="{{ asset('build/images/logo.svg') }}">
+                    <h1 class="title">Authorization</h1>
+                    <form method="post" class="form">
+                        <div class="input-field" style="position: relative">
+                            <input id="password" type="password" class="input">
+                            <label for="password"
+                                   style="font-weight: 500; font-size: 16px; color: #48525B;">
+                                Password
+                            </label>
+                            <span toggle="#confirm-password"
+                                  class="field-icon toggle-password"
+                                  style="width: 22px; height: 15px; position: absolute; right: 0; bottom: 21px">
+                                <span class="material-icons eye eyeDisabled">visibility</span>
+                            </span>
                         </div>
-                        <!--end::Signin-->
-
-                    </div>
+                        <div class="input-field" style="position: relative">
+                            <input id="repeat_password" type="password" class="input">
+                            <label for="repeat_password"
+                                   style="font-weight: 500; font-size: 16px; color: #48525B;">
+                                Repeat password
+                            </label>
+                            <span toggle="#confirm-password"
+                                  class="field-icon toggle-password"
+                                  style="width: 22px; height: 15px; position: absolute; right: 0; bottom: 21px">
+                                <span class="material-icons eye eyeDisabled">visibility</span>
+                            </span>
+                        </div>
+                        <button class="mainButton">Sign In</button>
+                        <p class="blueButton">Forgot password?</p>
+                    </form>
                 </div>
             </div>
+            <div style="display: flex; align-items: center; max-width: 280px; height: 22px; margin-top: 24px">
+                <p class="question">Don’t have an account?</p>
+                <p class="blueButton" style="width: 100px">Sign up</p>
+            </div>
         </div>
+        <script>
+            let eyes = document.querySelectorAll('.eyeDisabled');
+            let inputs = document.querySelectorAll('.input');
+
+
+            inputs.forEach((item, index) => {
+                item.onfocus = function() {
+                    eyes[index].style.display = 'block';
+                };
+                item.onblur = function() {
+                    if (eyes[index].classList.contains('eye') && !item.value)
+                    eyes[index].style.display = 'none';
+                };
+            })
+
+
+            eyes.forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    item.classList.toggle('eyeDisabled');
+                    if (inputs[index].type === "password") {
+                        inputs[index].type = "text";
+                    } else {
+                        inputs[index].type = "password";
+                    }
+                })
+            })
+        </script>
     </body>
 {% endblock %}
 
