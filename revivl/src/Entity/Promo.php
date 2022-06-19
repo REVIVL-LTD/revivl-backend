@@ -2,12 +2,16 @@
 
 namespace App\Entity;
 
+use App\Helper\Status\PromoStatus;
+use App\Helper\Status\StatusTrait;
 use App\Repository\PromoRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PromoRepository::class)]
 class Promo
 {
+    use StatusTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -18,6 +22,12 @@ class Promo
 
     #[ORM\OneToMany(targetEntity: Promocode::class, mappedBy: 'promo')]
     private $promocodes;
+
+    public function __construct()
+    {
+        $this->status = PromoStatus::ACTIVE->value;
+    }
+
 
     public function getId(): ?int
     {
@@ -36,5 +46,8 @@ class Promo
         return $this;
     }
 
-
+    public function getStatusName(): string
+    {
+        return  PromoStatus::from($this->getStatus())->getName();
+    }
 }

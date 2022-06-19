@@ -19,6 +19,10 @@ class PromoController extends AbstractController
         $promos = $entityManager
             ->getRepository(Promo::class)
             ->findAll();
+        /** @var Promo $promo */
+        foreach ($promos as $promo) {
+            $n = $promo->getStatusName();
+        }
 
         return $this->render('promo/index.html.twig', [
             'promos' => $promos,

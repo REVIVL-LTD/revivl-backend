@@ -10,6 +10,7 @@
             <tr>
                 <th>Id</th>
                 <th>Name</th>
+                <th>Status</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -18,6 +19,7 @@
             <tr>
                 <td>{{ promo.id }}</td>
                 <td>{{ promo.name }}</td>
+                <td>{{ promo.statusName }}</td>
                 <td>
                     <a href="{{ path('app_promo_show', {'id': promo.id}) }}">show</a>
                     <a href="{{ path('app_promo_edit', {'id': promo.id}) }}">edit</a>
