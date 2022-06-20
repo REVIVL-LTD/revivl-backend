@@ -3,20 +3,143 @@
 {% block title %}Reset your password{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('reset_password_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
-    <h1>Reset your password</h1>
-
-    {{ form_start(requestForm) }}
-        {{ form_row(requestForm.email) }}
-        <div>
-            <small>
-                Enter your email address and we will send you a
-                link to reset your password.
-            </small>
+    <style type="text/css">
+        .mainWrapper{
+            height: 100%;
+            width: 100%;
+            background: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            z-index: 100;
+        }
+        .mainWrapper::before{
+            content: '';
+            position: absolute;
+            width: 1104px;
+            height: 1104px;
+            left: 432px;
+            top: 51px;
+            background: linear-gradient(125.15deg, #0098CB 41.34%, rgba(0, 152, 203, 0) 96.67%);
+            opacity: 0.20;
+            filter: blur(600px);
+            z-index: -10;
+        }
+        .mainWrapper::after{
+            content: '';
+            position: absolute;
+            width: 891px;
+            height: 891px;
+            left: 13px;
+            top: -52px;
+            background: linear-gradient(303.68deg, #B21180 41.48%, rgba(178, 17, 128, 0) 87.39%);
+            opacity: 0.20;
+            filter: blur(600px);
+            z-index: -10;
+        }
+        .authBlock{
+            width: 688px;
+            height: 319px;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid #FFFFFF;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .registrationBlock{
+            width: 592px;
+            align-items: center;
+            text-align: center;
+        }
+        .title{
+            font-weight: 400;
+            font-size: 39px;
+            line-height: 140%;
+            color: #003A70;
+        }
+        .mainButton{
+            padding: 12px 24px;
+            width: 148px;
+            height: 46px;
+            background: #0098CB;
+            border-radius: 24px;
+            color: #ffffff;
+            border: none;
+            font-weight: 500;
+            font-size: 16px;
+        }
+        .mainButton:hover{
+            cursor: pointer;
+        }
+        @media(max-width: 700px){
+            .authBlock{
+                width: 92%;
+                height: 395px;
+            }
+            .registrationBlock{
+                max-width: 296px;
+            }
+            .title{
+                font-size: 25px;
+            }
+            .mainButton{
+                padding: 12px;
+                width: 124px;
+                height: 42px;
+                margin-bottom: 28px;
+                font-weight: 500;
+                font-size: 13px;
+            }
+        }
+    </style>
+    <body>
+{#        {% for flash_error in app.flashes('reset_password_error') %}#}
+{#            <div class="alert alert-danger" role="alert">{{ flash_error }}</div>#}
+{#        {% endfor %}#}
+        <div class="mainWrapper">
+            <div class="authBlock">
+                <div class="registrationBlock">
+                    <img style="width: 65px; height: 65px;"
+                         src="{{ asset('build/images/logo.svg') }}">
+                    <h1 class="title">Restore your password</h1>
+                    <div style="max-width: 280px; margin: 0 auto">
+                        {{ form_start(requestForm) }}
+                        <div id="inputContainer">
+                            {{ form_row(requestForm.email) }}
+                        </div>
+                        <button class="mainButton">Submit</button>
+                        {{ form_end(requestForm) }}
+                    </div>
+{#                    <form  name="reset_password_request_form"#}
+{#                           method="post"#}
+{#                           class="form">#}
+{#                        <div class="input-field" style="position: relative">#}
+{#                            <input id="email"#}
+{#                                   type="email"#}
+{#                                   class="input" />#}
+{#                            <label for="email"#}
+{#                                   id="label"#}
+{#                                   style="font-weight: 500;font-size: 16px;line-height: 140%;color: #48525B;">#}
+{#                                Your email#}
+{#                            </label>#}
+{#                        </div>#}
+{#                        <input type="hidden"#}
+{#                               id="reset_password_request_form__token"#}
+{#                               name="reset_password_request_form[_token]"#}
+{#                               value="{{ csrf_token('authenticate') }}">#}
+{#                        <button type="submit" class="mainButton">Submit</button>#}
+{#                    </form>#}
+                </div>
+            </div>
         </div>
-
-        <button class="btn btn-primary">Send password reset email</button>
-    {{ form_end(requestForm) }}
+    </body>
+    <script>
+        document.querySelector('#inputContainer').children[0].classList.add('input-field');
+        document.querySelector('.input-field').children[0].style = 'font-weight: 500;font-size: 16px;line-height: 140%;color: #48525B;';
+        document.querySelector('.input-field').children[0].textContent = 'Your email';
+    </script>
 {% endblock %}

@@ -80,13 +80,14 @@
             cursor: pointer;
         }
         .blueButton{
+            display: block;
             font-weight: 500;
             font-size: 16px;
             line-height: 140%;
             text-align: center;
             color: #0098CB;
         }
-        #password, #repeat_password {
+        #email, #password {
             border-bottom: 1px solid #0098CB;
         }
         .eye{
@@ -140,7 +141,14 @@
                     <h1 class="title">Authorization</h1>
                     <form method="post" class="form">
                         <div class="input-field" style="position: relative">
-                            <input id="password" type="password" class="input">
+                            <input id="email" type="email" class="input" name="email">
+                            <label for="email"
+                                   style="font-weight: 500; font-size: 16px; color: #48525B;">
+                                Your email
+                            </label>
+                        </div>
+                        <div class="input-field" style="position: relative">
+                            <input id="password" type="password" name="password" class="input inputPass">
                             <label for="password"
                                    style="font-weight: 500; font-size: 16px; color: #48525B;">
                                 Password
@@ -151,20 +159,8 @@
                                 <span class="material-icons eye eyeDisabled">visibility</span>
                             </span>
                         </div>
-                        <div class="input-field" style="position: relative">
-                            <input id="repeat_password" type="password" class="input">
-                            <label for="repeat_password"
-                                   style="font-weight: 500; font-size: 16px; color: #48525B;">
-                                Repeat password
-                            </label>
-                            <span toggle="#confirm-password"
-                                  class="field-icon toggle-password"
-                                  style="width: 22px; height: 15px; position: absolute; right: 0; bottom: 21px">
-                                <span class="material-icons eye eyeDisabled">visibility</span>
-                            </span>
-                        </div>
-                        <button class="mainButton">Sign In</button>
-                        <p class="blueButton">Forgot password?</p>
+                        <button class="mainButton" type="submit" id="kt_login_signin_submit">Sign In</button>
+                        <a href="{{ path('app_forgot_password_request') }}" id="kt_login_forgot" class="blueButton">Forgot password?</a>
                     </form>
                 </div>
             </div>
@@ -174,30 +170,24 @@
             </div>
         </div>
         <script>
-            let eyes = document.querySelectorAll('.eyeDisabled');
-            let inputs = document.querySelectorAll('.input');
+            let eye = document.querySelector('.eyeDisabled');
+            let input = document.querySelector('.inputPass');
+
+            input.onfocus = function() {
+                eye.style.display = 'block';
+            };
+            input.onblur = function() {
+                if (eye.classList.contains('eye') && !input.value) eye.style.display = 'none';
+            };
 
 
-            inputs.forEach((item, index) => {
-                item.onfocus = function() {
-                    eyes[index].style.display = 'block';
-                };
-                item.onblur = function() {
-                    if (eyes[index].classList.contains('eye') && !item.value)
-                    eyes[index].style.display = 'none';
-                };
-            })
-
-
-            eyes.forEach((item, index) => {
-                item.addEventListener('click', () => {
-                    item.classList.toggle('eyeDisabled');
-                    if (inputs[index].type === "password") {
-                        inputs[index].type = "text";
-                    } else {
-                        inputs[index].type = "password";
-                    }
-                })
+            eye.addEventListener('click', () => {
+                eye.classList.toggle('eyeDisabled');
+                if (input.type === "password") {
+                    input.type = "text";
+                } else {
+                    input.type = "password";
+                }
             })
         </script>
     </body>
