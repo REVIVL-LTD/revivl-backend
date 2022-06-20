@@ -21,8 +21,8 @@
                 <td>{{ promo.name }}</td>
                 <td>{{ promo.statusName }}</td>
                 <td>
-                    <a href="{{ path('app_promo_show', {'id': promo.id}) }}">show</a>
-                    <a href="{{ path('app_promo_edit', {'id': promo.id}) }}">edit</a>
+                    <a href="{{ path('lk_admin_promo_show', {'id': promo.id}) }}">show</a>
+                    <a href="{{ path('lk_admin_promo_edit', {'id': promo.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -33,5 +33,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_promo_new') }}">Create new</a>
+    <a href="{{ path('lk_admin_promo_new') }}">Create new</a>
 {% endblock %}

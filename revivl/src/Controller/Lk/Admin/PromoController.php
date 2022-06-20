@@ -5,15 +5,17 @@ namespace App\Controller\Lk\Admin;
 use App\Entity\Promo;
 use App\Form\PromoType;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/lk/admin/promo')]
+#[IsGranted('ROLE_ADMIN')]
 class PromoController extends AbstractController
 {
-    #[Route('', name: 'app_promo_index', methods: ['GET'])]
+    #[Route('', name: 'lk_admin_promo_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager): Response
     {
         $promos = $entityManager
@@ -29,7 +31,7 @@ class PromoController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_promo_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'lk_admin_promo_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $promo = new Promo();
@@ -40,7 +42,7 @@ class PromoController extends AbstractController
             $entityManager->persist($promo);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_promo_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('lk_admin_promo_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('promo/new.html.twig', [
@@ -49,7 +51,7 @@ class PromoController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_promo_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'lk_admin_promo_show', methods: ['GET'])]
     public function show(Promo $promo): Response
     {
         return $this->render('promo/show.html.twig', [
@@ -57,7 +59,7 @@ class PromoController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_promo_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'lk_admin_promo_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Promo $promo, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(PromoType::class, $promo);
@@ -66,7 +68,7 @@ class PromoController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_promo_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('lk_admin_promo_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('promo/edit.html.twig', [
@@ -75,7 +77,7 @@ class PromoController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_promo_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'lk_admin_promo_delete', methods: ['POST'])]
     public function delete(Request $request, Promo $promo, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$promo->getId(), $request->request->get('_token'))) {
@@ -83,6 +85,6 @@ class PromoController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_promo_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('lk_admin_promo_index', [], Response::HTTP_SEE_OTHER);
     }
 }

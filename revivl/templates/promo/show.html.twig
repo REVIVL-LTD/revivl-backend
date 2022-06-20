@@ -18,9 +18,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_promo_index') }}">back to list</a>
+    <a href="{{ path('lk_admin_promo_index') }}">back to list</a>
 
-    <a href="{{ path('app_promo_edit', {'id': promo.id}) }}">edit</a>
+    <a href="{{ path('lk_admin_promo_edit', {'id': promo.id}) }}">edit</a>
 
     {{ include('promo/_delete_form.html.twig') }}
 {% endblock %}
