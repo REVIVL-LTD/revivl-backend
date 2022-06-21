@@ -36,7 +36,7 @@
 }
 .authBlock{
     width: 688px;
-    height: 441px;
+    height: 319px;
     background: rgba(255, 255, 255, 0.5);
     border: 1px solid #FFFFFF;
     border-radius: 8px;
@@ -45,7 +45,7 @@
     justify-content: center;
 }
 .registrationBlock{
-    width: 280px;
+    width: 592px;
     align-items: center;
     text-align: center;
 }
@@ -63,41 +63,11 @@
     border-radius: 24px;
     color: #ffffff;
     border: none;
-    margin-bottom: 28px;
     font-weight: 500;
     font-size: 16px;
 }
 .mainButton:hover{
     cursor: pointer;
-}
-.blueButton:hover{
-    cursor: pointer;
-}
-.blueButton{
-    display: block;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 140%;
-    text-align: center;
-    color: #0098CB;
-}
-#email, #password {
-    border-bottom: 1px solid #0098CB;
-}
-.eye{
-    color: gray;
-    display: none;
-}
-.eye:hover{
-    cursor: pointer;
-}
-.eyeDisabled{
-    color: #0098CB;
-}
-.question{
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 140%;
 }
 @media(max-width: 700px){
     .authBlock{
@@ -116,12 +86,6 @@
         height: 42px;
         margin-bottom: 28px;
         font-weight: 500;
-        font-size: 13px;
-    }
-    .blueButton{
-        font-size: 13px;
-    }
-    .question{
         font-size: 13px;
     }
 }

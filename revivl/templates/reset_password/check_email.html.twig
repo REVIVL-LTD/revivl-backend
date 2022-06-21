@@ -3,114 +3,7 @@
 {% block title %}Password Reset Email Sent{% endblock %}
 
 {% block body %}
-{#    <p>#}
-{#        If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.#}
-{#        This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.#}
-{#    </p>#}
-{#    <p>If you don't receive an email please check your spam folder or <a href="{{ path('app_forgot_password_request') }}">try again</a>.</p>#}
-    <style type="text/css">
-        .mainWrapper{
-            height: 100%;
-            width: 100%;
-            background: #FFFFFF;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-            z-index: 100;
-        }
-        .mainWrapper::before{
-            content: '';
-            position: absolute;
-            width: 1104px;
-            height: 1104px;
-            left: 432px;
-            top: 51px;
-            background: linear-gradient(125.15deg, #0098CB 41.34%, rgba(0, 152, 203, 0) 96.67%);
-            opacity: 0.20;
-            filter: blur(600px);
-            z-index: -10;
-        }
-        .mainWrapper::after{
-            content: '';
-            position: absolute;
-            width: 891px;
-            height: 891px;
-            left: 13px;
-            top: -52px;
-            background: linear-gradient(303.68deg, #B21180 41.48%, rgba(178, 17, 128, 0) 87.39%);
-            opacity: 0.20;
-            filter: blur(600px);
-            z-index: -10;
-        }
-        .authBlock{
-            width: 688px;
-            height: 359px;
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid #FFFFFF;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .registrationBlock{
-            width: 592px;
-            align-items: center;
-            text-align: center;
-        }
-        .title{
-            font-weight: 400;
-            font-size: 39px;
-            line-height: 140%;
-            color: #003A70;
-        }
-        .mainButton{
-            padding: 12px 24px;
-            width: 148px;
-            height: 46px;
-            background: #0098CB;
-            border-radius: 24px;
-            color: #ffffff;
-            border: none;
-            font-weight: 500;
-            font-size: 16px;
-        }
-        .mainButton:hover{
-            cursor: pointer;
-        }
-        .text{
-            max-width: 302px;
-            text-align: center;
-            font-weight: 500;
-            font-size: 16px;
-            line-height: 140%;
-            margin: 0 auto;
-            padding-top: 10px;
-            padding-bottom: 24px;
-        }
-        @media(max-width: 700px){
-            .authBlock{
-                width: 92%;
-                height: 395px;
-            }
-            .registrationBlock{
-                max-width: 296px;
-            }
-            .title{
-                font-size: 25px;
-            }
-            .mainButton{
-                padding: 12px;
-                width: 124px;
-                height: 42px;
-                margin-bottom: 28px;
-                font-weight: 500;
-                font-size: 13px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('build/css/checkEmail.css') }}">
     <body>
     <div class="mainWrapper">
         <div class="authBlock">
@@ -122,7 +15,7 @@
                     Ut posuere massa arcu, ut lacinia tellus cursus quis.
                     Curabitur iaculis turpis ut viverra dictum.
                 </p>
-                <button href="{{ path() }}}" class="mainButton">Continue</button>
+                <button class="mainButton">Continue</button>
             </div>
         </div>
     </div>
