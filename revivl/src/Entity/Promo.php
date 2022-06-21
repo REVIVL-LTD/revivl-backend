@@ -5,7 +5,9 @@ namespace App\Entity;
 use App\Helper\Status\PromoStatus;
 use App\Helper\Status\StatusTrait;
 use App\Repository\PromoRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 #[ORM\Entity(repositoryClass: PromoRepository::class)]
 class Promo
@@ -26,6 +28,7 @@ class Promo
     public function __construct()
     {
         $this->status = PromoStatus::ACTIVE->value;
+        $this->promocodes = new PersistentCollection();
     }
 
 
@@ -50,4 +53,10 @@ class Promo
     {
         return  PromoStatus::from($this->getStatus())->getName();
     }
+
+    public function getPromocodes(): PersistentCollection
+    {
+        return $this->promocodes;
+    }
+
 }

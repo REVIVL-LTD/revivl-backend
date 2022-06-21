@@ -11,7 +11,8 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>Status</th>
-                <th>actions</th>
+                <th>Codes quantity</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -20,6 +21,7 @@
                 <td>{{ promo.id }}</td>
                 <td>{{ promo.name }}</td>
                 <td>{{ promo.statusName }}</td>
+                <td>{{ promo.promocodes|length }}</td>
                 <td>
                     <a href="{{ path('lk_admin_promo_show', {'id': promo.id}) }}">show</a>
                     <a href="{{ path('lk_admin_promo_edit', {'id': promo.id}) }}">edit</a>
